@@ -6,7 +6,9 @@
   "author": "Tommy Khumarga <tommy@ptdigital.co.id>",
   "license": "MIT",
   "dependencies": {
+    "@popperjs/core": "^2.4.4",
     "bootstrap": "^4.5.2",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20"
   }
 }
