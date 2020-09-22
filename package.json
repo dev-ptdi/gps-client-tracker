@@ -1,0 +1,12 @@
+{
+  "name": "gps-client-tracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dev-ptdi/gps-client-tracker.git",
+  "author": "Tommy Khumarga <tommy@ptdigital.co.id>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.5.2",
+    "jquery": "^3.5.1"
+  }
+}
