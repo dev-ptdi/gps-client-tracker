@@ -20,18 +20,18 @@ function initMap() {
         if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
         else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
 
-        _refreshIcon = document.createElement('i');
-        _refreshIcon.className = 'fas fa-sync';
+        // _refreshIcon = document.createElement('i');
+        // _refreshIcon.className = 'fas fa-sync';
 
-        _refreshButton = document.createElement('button');
-        _refreshButton.className = 'btn btn-success rounded';
-        _refreshButton.style.marginRight = '20px';
-        _refreshButton.style.marginTop = '20px';
-        _refreshButton.appendChild(_refreshIcon);
-        _refreshButton.addEventListener('click', function() {
-            _refreshIcon.classList.add('fa-spin');
-            setMarkers();
-        });
+        // _refreshButton = document.createElement('button');
+        // _refreshButton.className = 'btn btn-success rounded';
+        // _refreshButton.style.marginRight = '20px';
+        // _refreshButton.style.marginTop = '20px';
+        // _refreshButton.appendChild(_refreshIcon);
+        // _refreshButton.addEventListener('click', function() {
+        //     _refreshIcon.classList.add('fa-spin');
+        //     setMarkers();
+        // });
 
         _map = new google.maps.Map(document.getElementById('map'), {
             mapTypeControl: false,
@@ -39,9 +39,9 @@ function initMap() {
             fullscreenControl: false
         });
 
-        _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
-            _refreshButton
-        );
+        // _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+        //     _refreshButton
+        // );
 
         // setMarkers();
     });
