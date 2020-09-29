@@ -32,16 +32,21 @@ function initMap() {
         });
 
         _map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: -34.397,
+                lng: 150.644,
+              },
             mapTypeControl: false,
             streetViewControl: false,
-            fullscreenControl: false
+            fullscreenControl: false,
+            zoom: 10
         });
 
         _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
             _refreshButton
         );
 
-        setMarkers();
+        // setMarkers();
     });
 }
 
