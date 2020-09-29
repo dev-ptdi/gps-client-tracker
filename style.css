@@ -12,3 +12,8 @@ body {
     font-size: inherit;
     color: #000000;
 }
+
+.gm-style-iw > button {
+    display: none !important;
+}
+.gm-style-iw {text-align:center;}
