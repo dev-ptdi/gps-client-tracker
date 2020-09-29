@@ -14,7 +14,9 @@ var _apiUrl = '',
     _refreshButton;
 
 function initMap() {
+    alert('disini 1');
     $.getJSON('config.json', function(result) {
+        alert('disini 2');
         if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
         else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
 
@@ -69,6 +71,7 @@ function setMarkers() {
     };
 
     ajaxCallPost(url, headers, params, function(result) {
+        alert('disini 3');
         if(result.result) {
             const payload = result.payload;
             _markerPos = [];
