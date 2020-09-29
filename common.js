@@ -43,7 +43,7 @@ function initMap() {
             _refreshButton
         );
 
-        setMarkers();
+        // setMarkers();
     });
 }
 
@@ -73,6 +73,7 @@ function setMarkers() {
     ajaxCallPost(url, headers, params, function(result) {
         alert('disini 3');
         if(result.result) {
+            alert('masuk');
             const payload = result.payload;
             _markerPos = [];
 
@@ -136,7 +137,9 @@ function setMarkers() {
 
                     _map.setCenter(_latLngBounds.getCenter());
                     _map.fitBounds(_latLngBounds);
+                    alert('selesai');
                 } else {
+                    alert('gak masuk');
                     if(navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function(pos) {
                             const coords = pos.coords;
