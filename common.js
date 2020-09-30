@@ -1,5 +1,3 @@
-const googleMapsApiKey = 'AIzaSyDtUB_Kzv_2b7NSod6LkEv-iVZ_KhBGsIw';
-
 var _apiUrl = '',
     _apiKey = 'XRFhwNDIyQDMxMzcyZTMyMmUzMlTclR21RaFh',
     _apiSecret = 'TclR2Y1dE4vdkNPT09GJwRzvKzhialRCTclRA',
@@ -14,53 +12,38 @@ var _apiUrl = '',
     _refreshButton;
 
 function initMap() {
-    _map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: -34.397,
-            lng: 150.644,
-          },
-        // mapTypeControl: false,
-        // streetViewControl: false,
-        // fullscreenControl: false,
-        zoom: 10
+    $.getJSON('config.json', function(result) {
+        if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
+        else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
+
+        _refreshIcon = document.createElement('i');
+        _refreshIcon.className = 'fas fa-sync fa-2x';
+
+        _refreshButton = document.createElement('button');
+        _refreshButton.className = 'refresh-btn';
+        _refreshButton.style.marginRight = '20px';
+        _refreshButton.style.marginTop = '20px';
+        _refreshButton.appendChild(_refreshIcon);
+        _refreshButton.addEventListener('click', function() {
+            _refreshIcon.classList.add('fa-spin');
+            setMarkers();
+        });
+
+        _map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false
+        });
+
+        _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+            _refreshButton
+        );
+
+        setMarkers();
     });
-    // $.getJSON('config.json', function(result) {
-    //     if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
-    //     else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
-
-        // _refreshIcon = document.createElement('i');
-        // _refreshIcon.className = 'fas fa-sync';
-
-        // _refreshButton = document.createElement('button');
-        // _refreshButton.className = 'btn btn-success rounded';
-        // _refreshButton.style.marginRight = '20px';
-        // _refreshButton.style.marginTop = '20px';
-        // _refreshButton.appendChild(_refreshIcon);
-        // _refreshButton.addEventListener('click', function() {
-        //     _refreshIcon.classList.add('fa-spin');
-        //     setMarkers();
-        // });
-
-        // _map = new google.maps.Map(document.getElementById('map'), {
-        //     center: {
-        //         lat: -34.397,
-        //         lng: 150.644,
-        //       },
-        //     mapTypeControl: false,
-        //     streetViewControl: false,
-        //     fullscreenControl: false,
-        //     zoom: 10
-        // });
-
-        // _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
-        //     _refreshButton
-        // );
-
-        // setMarkers();
-    // });
 }
 
-// setInterval(setMarkers, 30000);
+setInterval(setMarkers, 30000);
 
 function setMarkers() {
     _markerIcon = {
@@ -104,21 +87,15 @@ function setMarkers() {
 
                         const markerObj = {
                             title: e.name,
+                            alarm: e.alarm,
                             lat: e.coords.lat,
                             lng: e.coords.lon,
-                            description: 'VIN: ' + e.vin
+                            description: 'VIN: ' + e.vin,
+                            address: e.coords.address
                         };
 
                         _markerPos.push(markerObj);
                     });
-
-                    // $('.btn-vin').on('click', function() {
-                    //     _deviceList.children('a').removeClass('active');
-                    //     $(this).addClass('active');
-                    //     const vin = $(this).data('vin');
-                    //     const find = _.find(_vins, {vin: vin});
-                    //     getDeviceLocation(find);
-                    // });
 
                     setMapOnAll(null);
 
@@ -132,8 +109,13 @@ function setMarkers() {
                             icon: _markerIcon
                         });
 
+                        let infoText = '<div style="font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem;">' + data.title + '</div>';
+                        if(data.alarm.trim() != '') infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem; color: red; font-weight: bold;">' + data.alarm + '</p>';
+                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.description + '</p>';
+                        if(data.address.trim() != '') infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.description + '</p>';
+
                         marker._infowindow = new google.maps.InfoWindow({
-                            content: '<div style="font-weight: bold; font-size: 1rem; margin-bottom: 0.7rem;">' + data.title + '</div><p style="margin: 0;">' + data.description + '</p>'
+                            content: infoText
                         });
 
                         google.maps.event.addListener(marker, 'click', function() {
@@ -173,7 +155,7 @@ function setMarkers() {
 
                 _refreshIcon.classList.remove('fa-spin');
             } else alert('Expired');
-        } else alert(result.message);
+        } else alert(result.msg);
     });
 }
 
