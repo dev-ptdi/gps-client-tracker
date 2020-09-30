@@ -81,6 +81,8 @@ function setMarkers() {
         if(result.result) {
             const payload = result.payload;
             _markerPos = [];
+            setMapOnAll(null);
+            _markers = [];
 
             if(!payload.is_expired) {
                 _deviceList.empty();
@@ -88,10 +90,9 @@ function setMarkers() {
 
                 if(payload.vins.length > 0) {
                     _latLngBounds = new google.maps.LatLngBounds();
-                    setMapOnAll(null);
 
                     $.each(payload.vins, function(i, e) {
-                        let html = '<a href="javascript:void(0);" class="list-group-item list-group-item-action btn-select-device ' + (e.vin === _selectedVin ? 'active' : '') + '" data-vin="' + e.vin + '" data-index="' + i + '" style="cursor-p">';
+                        let html = '<a href="javascript:void(0);" class="list-group-item list-group-item-action btn-select-device ' + (e.vin === _selectedVin ? 'active' : '') + '" data-vin="' + e.vin + '" data-index="' + i + '">';
                         html += e.name;
                         html += '</a>';
 
