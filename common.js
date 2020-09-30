@@ -25,7 +25,6 @@ function initMap() {
         _refreshButton.style.marginTop = '20px';
         _refreshButton.appendChild(_refreshIcon);
         _refreshButton.addEventListener('click', function() {
-            _refreshIcon.classList.add('fa-spin');
             setMarkers();
         });
 
@@ -46,6 +45,8 @@ function initMap() {
 setInterval(setMarkers, 30000);
 
 function setMarkers() {
+    _refreshIcon.classList.add('fa-spin');
+    
     _markerIcon = {
         url: 'images/car-marker-32.png',
         size: new google.maps.Size(40, 40),
