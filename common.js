@@ -111,9 +111,9 @@ function setMarkers() {
                         });
 
                         let infoText = '<div style="font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem;">' + data.title + '</div>';
-                        if(data.alarm.trim() != '') infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem; color: red; font-weight: bold;">' + data.alarm + '</p>';
+                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem; color: red; font-weight: bold;">' + data.alarm + '</p>';
                         infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.description + '</p>';
-                        if(data.address.trim() != '') infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.description + '</p>';
+                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.address + '</p>';
 
                         marker._infowindow = new google.maps.InfoWindow({
                             content: infoText
