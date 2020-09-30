@@ -189,10 +189,6 @@ function setMarkers() {
                             content: infoText
                         });
 
-                        // marker.addListener('click', function() {
-                        //     infoWindow.open(map, marker);
-                        // });
-
                         _markers.push(marker);
                         _latLngBounds.extend(marker.position);
                     });
@@ -273,7 +269,6 @@ function getDeviceLocation(data) {
     _markers.push(marker);
 
     _map.setCenter(_latLngBounds.getCenter());
-    // _map.setZoom(18);
     _map.fitBounds(_latLngBounds);
 }
 
