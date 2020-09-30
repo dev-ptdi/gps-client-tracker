@@ -11,8 +11,6 @@ body {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     font-size: inherit;
     color: #000000;
-    margin: 0;
-    padding: 0;
 }
 
 #map {
@@ -32,7 +30,25 @@ body {
     cursor: pointer;
 }
 
-.gm-style-iw > button {
-    display: none !important;
+.infotext-row {
+    width: 100%;
 }
-.gm-style-iw {text-align:center;}
+
+.infotext-row::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.infotext-col {
+    width: 50%;
+    float: left;
+    padding: 5px;
+}
+
+/* .gm-style-iw > button {
+    display: none !important;
+} */
+.gm-style-iw {
+    max-width: 400px;
+}

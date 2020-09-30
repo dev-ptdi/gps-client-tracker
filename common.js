@@ -8,13 +8,16 @@ var _apiUrl = '',
     _markers = [],
     _latLngBounds,
     _markerIcon,
+    _markerIconFocus,
     _refreshIcon,
-    _refreshButton;
+    _refreshButton,
+    _selectedVin = null,
+    _selectedIndex = -1;
 
 function initMap() {
     $.getJSON('config.json', function(result) {
-        if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
-        else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
+        if(result.environment === 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
+        else if(result.environment === 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
 
         _refreshIcon = document.createElement('i');
         _refreshIcon.className = 'fas fa-sync fa-2x';
@@ -42,7 +45,7 @@ function initMap() {
     });
 }
 
-setInterval(setMarkers, 30000);
+// setInterval(setMarkers, 30000);
 
 function setMarkers() {
     _refreshIcon.classList.add('fa-spin');
@@ -52,6 +55,13 @@ function setMarkers() {
         size: new google.maps.Size(40, 40),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(20, 40)
+    };
+
+    _markerIconFocus = {
+        url: 'images/car-marker-64.png',
+        size: new google.maps.Size(48, 48),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(24, 48)
     };
 
     const url = _apiUrl;
@@ -78,59 +88,122 @@ function setMarkers() {
 
                 if(payload.vins.length > 0) {
                     _latLngBounds = new google.maps.LatLngBounds();
+                    setMapOnAll(null);
 
                     $.each(payload.vins, function(i, e) {
-                        let html = '<a href="javascript:void(0);" class="list-group-item list-group-item-action btn-vin" data-vin="' + e.vin + '" style="cursor-p">';
-                        html += e.vin;
+                        let html = '<a href="javascript:void(0);" class="list-group-item list-group-item-action btn-select-device ' + (e.vin === _selectedVin ? 'active' : '') + '" data-vin="' + e.vin + '" data-index="' + i + '" style="cursor-p">';
+                        html += e.name;
                         html += '</a>';
 
                         _deviceList.append(html);
 
-                        const markerObj = {
-                            title: e.name,
-                            alarm: e.alarm,
-                            lat: e.coords.lat,
-                            lng: e.coords.lon,
-                            description: 'VIN: ' + e.vin,
-                            address: e.coords.address
-                        };
-
-                        _markerPos.push(markerObj);
-                    });
-
-                    setMapOnAll(null);
-
-                    for(let i = 0; i < _markerPos.length; i++) {
-                        const data = _markerPos[i];
-                        const latLng = new google.maps.LatLng(data.lat, data.lng);
+                        const data = e;
+                        const latLng = new google.maps.LatLng(data.coords.lat, data.coords.lon);
                         const marker = new google.maps.Marker({
                             position: latLng,
-                            title: data.title,
+                            title: data.name,
                             map: _map,
                             icon: _markerIcon
                         });
 
-                        let infoText = '<div style="font-weight: bold; font-size: 0.9rem; margin-bottom: 0.5rem;">' + data.title + '</div>';
-                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem; color: red; font-weight: bold;">' + data.alarm + '</p>';
-                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.description + '</p>';
-                        infoText += '<p style="margin: 0; font-size: 0.8rem; margin-bottom: 0.3rem;">' + data.address + '</p>';
+                        infoText = '<div class="row no-gutters">';
+                        infoText += '<div class="col-6">';
+                        infoText += '<table class="table table-borderless table-sm mb-0">';
+                        infoText += '<tr>';
+                        infoText += '<td>Plate No</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.name + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>VIN</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.vin + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Alarm</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td style="color: red;">' + data.alarm + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Speed (KM/H)</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.coords.speed + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Odometer (KM)</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.odometer + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Total Distance (KM)</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.total_distance + '</td>';
+                        infoText += '</tr>';
+                        infoText += '</table>';
+                        infoText += '</div>';
+                        infoText += '<div class="col-6">';
+                        infoText += '<table class="table table-borderless table-sm mb-0">';
+                        infoText += '<tr>';
+                        infoText += '<td style="vertical-align: top;">Address</td>';
+                        infoText += '<td style="width: 1%; vertical-align: top;">:</td>';
+                        infoText += '<td>' + data.coords.address + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Latitude</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.coords.lat + '</td>';
+                        infoText += '</tr>';
+                        infoText += '<tr>';
+                        infoText += '<td>Longitude</td>';
+                        infoText += '<td style="width: 1%;">:</td>';
+                        infoText += '<td>' + data.coords.lon + '</td>';
+                        infoText += '</tr>';
+                        infoText += '</table>';
+                        infoText += '</div>';
+                        infoText += '</div>';
 
-                        marker._infowindow = new google.maps.InfoWindow({
+                        marker.infowindow = new google.maps.InfoWindow({
                             content: infoText
                         });
 
-                        google.maps.event.addListener(marker, 'click', function() {
-                            this._infowindow.open(_map, this);
-                        });
-
-                        google.maps.event.trigger(marker, 'click');
+                        // marker.addListener('click', function() {
+                        //     infoWindow.open(map, marker);
+                        // });
 
                         _markers.push(marker);
                         _latLngBounds.extend(marker.position);
-                    }
+                    });
 
-                    _map.setCenter(_latLngBounds.getCenter());
-                    _map.fitBounds(_latLngBounds);
+                    $('.btn-select-device').on('click', function() {
+                        $.each(_markers, function(i, e) {
+                            _markers[i].setIcon(_markerIcon);
+                            _markers[i].infowindow.close();
+                        });
+
+                        _deviceList.children('a').removeClass('active');
+                        $(this).addClass('active');
+
+                        const sel = $(this).data('vin');
+                        const index = $(this).data('index');
+                        _selectedVin = sel;
+                        _selectedIndex = index;
+                        const find = _.find(_vins, {vin: sel});
+                        const selLatLng = new google.maps.LatLng(find.coords.lat, find.coords.lon);
+                        _map.setCenter(selLatLng);
+                        _markers[index].setIcon(_markerIconFocus);
+                        _markers[index].infowindow.open(_map, _markers[index]);
+                    });
+
+                    if(_selectedVin === null) {
+                        _map.setCenter(_latLngBounds.getCenter());
+                        _map.fitBounds(_latLngBounds);
+                    } else {
+                        const find = _.find(_vins, {vin: _selectedVin});
+                        const selLatLng = new google.maps.LatLng(find.coords.lat, find.coords.lon);
+                        _map.setCenter(selLatLng);
+                        _markers[_selectedIndex].setIcon(_markerIconFocus);
+                        _markers[_selectedIndex].infowindow.open(_map, _markers[_selectedIndex]);
+                    }
                 } else {
                     if(navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function(pos) {
