@@ -14,16 +14,16 @@ var _apiUrl = '',
     _refreshButton;
 
 function initMap() {
-    // _map = new google.maps.Map(document.getElementById('map'), {
-    //     center: {
-    //         lat: -34.397,
-    //         lng: 150.644,
-    //       },
-    //     // mapTypeControl: false,
-    //     // streetViewControl: false,
-    //     // fullscreenControl: false,
-    //     zoom: 10
-    // });
+    _map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+            lat: -34.397,
+            lng: 150.644,
+          },
+        // mapTypeControl: false,
+        // streetViewControl: false,
+        // fullscreenControl: false,
+        zoom: 10
+    });
     // $.getJSON('config.json', function(result) {
     //     if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
     //     else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
