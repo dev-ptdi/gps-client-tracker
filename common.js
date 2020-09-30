@@ -19,9 +19,9 @@ function initMap() {
             lat: -34.397,
             lng: 150.644,
           },
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: false,
+        // mapTypeControl: false,
+        // streetViewControl: false,
+        // fullscreenControl: false,
         zoom: 10
     });
     // $.getJSON('config.json', function(result) {
