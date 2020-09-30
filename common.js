@@ -45,7 +45,7 @@ function initMap() {
     });
 }
 
-// setInterval(setMarkers, 30000);
+setInterval(setMarkers, 30000);
 
 function setMarkers() {
     _refreshIcon.classList.add('fa-spin');
