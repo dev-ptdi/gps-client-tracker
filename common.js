@@ -14,9 +14,19 @@ var _apiUrl = '',
     _refreshButton;
 
 function initMap() {
-    $.getJSON('config.json', function(result) {
-        if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
-        else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
+    _map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+            lat: -34.397,
+            lng: 150.644,
+          },
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+        zoom: 10
+    });
+    // $.getJSON('config.json', function(result) {
+    //     if(result.environment == 'development') _apiUrl = 'http://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
+    //     else if(result.environment == 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
 
         // _refreshIcon = document.createElement('i');
         // _refreshIcon.className = 'fas fa-sync';
@@ -31,23 +41,23 @@ function initMap() {
         //     setMarkers();
         // });
 
-        _map = new google.maps.Map(document.getElementById('map'), {
-            center: {
-                lat: -34.397,
-                lng: 150.644,
-              },
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-            zoom: 10
-        });
+        // _map = new google.maps.Map(document.getElementById('map'), {
+        //     center: {
+        //         lat: -34.397,
+        //         lng: 150.644,
+        //       },
+        //     mapTypeControl: false,
+        //     streetViewControl: false,
+        //     fullscreenControl: false,
+        //     zoom: 10
+        // });
 
         // _map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
         //     _refreshButton
         // );
 
         // setMarkers();
-    });
+    // });
 }
 
 // setInterval(setMarkers, 30000);
