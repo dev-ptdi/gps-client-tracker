@@ -162,7 +162,7 @@ function setMarkers() {
                         infoText += '</tr>';
                         infoText += '<tr>';
                         infoText += '<tr>';
-                        infoText += '<td style="vertical-align: top;">Address</td>';
+                        infoText += '<td style="vertical-align: top;">Location</td>';
                         infoText += '<td style="width: 1%; vertical-align: top;">:</td>';
                         infoText += '<td>' + data.coords.address + '</td>';
                         infoText += '</tr>';
