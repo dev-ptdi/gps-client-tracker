@@ -1,4 +1,8 @@
-<?php if(!isset($_GET['token'])) exit('Forbidden'); ?>
+<?php
+if(!isset($_GET['token'])) exit('Forbidden');
+
+require_once 'config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +27,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var _loadInverval = <?=LOAD_INTERVAL?>;
+    </script>
     <script src="libs/jquery/jquery.min.js"></script>
     <script src="libs/popperjs/popper.min.js"></script>
     <script src="libs/bootstrap/js/bootstrap.min.js"></script>

@@ -46,7 +46,7 @@ $(function() {
     getLocations();
 });
 
-setInterval(updatePosition, 10000);
+setInterval(updatePosition, _loadInverval);
 
 function getLocations() {
     const params = {
