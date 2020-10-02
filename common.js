@@ -35,7 +35,7 @@ $(function() {
 
     $.getJSON('config.json', function(result) {
         if(result.environment === 'development') _apiUrl = 'https://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
-        else if(result.environment === 'production') _apiUrl = 'http://192.168.90.8:5000/Traccar/Get_Token_InfoAsync';
+        else if(result.environment === 'production') _apiUrl = 'http://localhost:5000/Traccar/Get_Token_InfoAsync';
 
         _map = L.map('map').setView([0, 0], 13);
 
@@ -58,7 +58,7 @@ $(function() {
     });
 });
 
-setInterval(updatePosition, 30000);
+setInterval(updatePosition, 5000);
 
 function getLocations() {
     const url = _apiUrl;
