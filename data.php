@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php';
 
-$api_url = (ENV == 'production' ? 'http://localhost:5000/Traccar/Get_Token_Info_Async' : 'https://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync');
+$api_url = (ENV == 'production' ? 'http://localhost:5000/Traccar/Get_Token_InfoAsync' : 'https://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync');
 $api_key = 'XRFhwNDIyQDMxMzcyZTMyMmUzMlTclR21RaFh';
 $api_secret = 'TclR2Y1dE4vdkNPT09GJwRzvKzhialRCTclRA';
 
