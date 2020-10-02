@@ -58,7 +58,7 @@ $(function() {
     });
 });
 
-setInterval(updatePosition, 5000);
+setInterval(updatePosition, 30000);
 
 function getLocations() {
     const url = _apiUrl;
