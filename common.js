@@ -1,7 +1,4 @@
-var _apiUrl = null,
-    _apiKey = 'XRFhwNDIyQDMxMzcyZTMyMmUzMlTclR21RaFh',
-    _apiSecret = 'TclR2Y1dE4vdkNPT09GJwRzvKzhialRCTclRA',
-    _mapBoxPublicToken = 'pk.eyJ1IjoiZGV2LXB0ZGkiLCJhIjoiY2tmZHBnZWM5MDlqejJ6bmVxbWJndWowNCJ9.HdpiDmcwWSzPba_OrX3Rxw',
+var _mapBoxPublicToken = 'pk.eyJ1IjoiZGV2LXB0ZGkiLCJhIjoiY2tmZHBnZWM5MDlqejJ6bmVxbWJndWowNCJ9.HdpiDmcwWSzPba_OrX3Rxw',
     _map = null,
     _realtime = null,
     _deviceList = $('#device-list'),
@@ -10,10 +7,6 @@ var _apiUrl = null,
     _markers = [],
     _markerGroup = null,
     _latLngBounds = [],
-    // _markerIcon,
-    // _markerIconFocus,
-    // _refreshIcon,
-    // _refreshButton,
     _selectedVin = null,
     _selectedIndex = -1,
     _carIcon = null,
@@ -33,48 +26,34 @@ $(function() {
         iconAnchor: [32, 64]
     });
 
-    $.getJSON('config.json', function(result) {
-        if(result.environment === 'development') _apiUrl = 'https://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync';
-        else if(result.environment === 'production') _apiUrl = 'Traccar/Get_Token_InfoAsync';
+    _map = L.map('map').setView([0, 0], 13);
 
-        _map = L.map('map').setView([0, 0], 13);
+    // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    //     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    //     maxZoom: 18,
+    //     id: 'mapbox/streets-v11',
+    //     tileSize: 512,
+    //     zoomOffset: -1,
+    //     accessToken: _mapBoxPublicToken,
+    // }).addTo(_map);
 
-        // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        //     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //     maxZoom: 18,
-        //     id: 'mapbox/streets-v11',
-        //     tileSize: 512,
-        //     zoomOffset: -1,
-        //     accessToken: _mapBoxPublicToken,
-        // }).addTo(_map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(_map);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(_map);
+    _markerGroup = L.layerGroup().addTo(_map);
 
-        _markerGroup = L.layerGroup().addTo(_map);
-
-        getLocations();
-    });
+    getLocations();
 });
 
 setInterval(updatePosition, 5000);
 
 function getLocations() {
-    const url = _apiUrl;
-    const apiKey = _apiKey;
-    const apiSecret = _apiSecret;
     const params = {
-        lang: 'en',
         token: getUrlVars()['token']
     };
 
-    const headers = {
-        'api_key': apiKey,
-        'api_secret': apiSecret
-    };
-
-    ajaxCallPost(url, headers, params, function(result) {
+    ajaxCallPost('data.php', params, function(result) {
         if(result.result) {
             const payload = result.payload;
             _markerPos = [];
@@ -160,21 +139,12 @@ function selectVin(index) {
 }
 
 function updatePosition() {
-    const url = _apiUrl;
-    const apiKey = _apiKey;
-    const apiSecret = _apiSecret;
     const params = {
-        lang: 'en',
         token: getUrlVars()['token']
     };
 
-    const headers = {
-        'api_key': apiKey,
-        'api_secret': apiSecret
-    };
-
-    ajaxCallPost(url, headers, params, function(result) {
-        if(result.result) {
+    ajaxCallPost('data.php', params, function(result) {
+        if(result.success == true) {
             const payload = result.payload;
             _latLngBounds = L.latLngBounds();
 
@@ -197,7 +167,7 @@ function updatePosition() {
                     }
                 }
             } else alert('Token expired');
-        } else alert(result.msg);
+        } else alert(result.message);
     });
 }
 
@@ -212,15 +182,12 @@ function getUrlVars() {
     return vars;
 }
 
-function ajaxCallPost(url, headers, data, callback) {
+function ajaxCallPost(url, data, callback) {
     $.ajax({
         url: url,
-        data: JSON.stringify(data),
+        data: data,
         type: 'post',
         dataType: 'json',
-        headers: headers,
-        crossDomain: true,
-        contentType: 'application/json; charset=utf-8',
         success: function(result) {
             callback(result);
         }

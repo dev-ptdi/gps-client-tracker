@@ -1,3 +1,5 @@
+<?php if(!isset($_GET['token'])) exit('Forbidden'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
