@@ -71,8 +71,7 @@ function getLocations() {
 
     const headers = {
         'api_key': apiKey,
-        'api_secret': apiSecret,
-        'Access-Control-Allow-Origin': '*'
+        'api_secret': apiSecret
     };
 
     ajaxCallPost(url, headers, params, function(result) {
@@ -220,6 +219,7 @@ function ajaxCallPost(url, headers, data, callback) {
         type: 'post',
         dataType: 'json',
         headers: headers,
+        crossDomain: true,
         contentType: 'application/json; charset=utf-8',
         success: function(result) {
             callback(result);
