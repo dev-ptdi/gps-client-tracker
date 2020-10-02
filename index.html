@@ -12,12 +12,12 @@
 <body>
     <div class="container-fluid pr-0 pl-0 h-100">
         <div class="row no-gutters h-100">
-            <div class="col-lg-3 p-3 border-right">
+            <div id="map-wrapper" class="col-lg-9 col-12">
+                <div id="map"></div>
+            </div>
+            <div id="sidebar" class="col-lg-3 col-12 p-3 border-right">
                 <h4 class="ml-3 mr-3 mb-4">Vehicle List</h4>
                 <div id="device-list"></div>
-            </div>
-            <div class="col-lg-9">
-                <div id="map"></div>
             </div>
         </div>
     </div>
@@ -26,7 +26,6 @@
     <script src="libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="libs/lodash/lodash.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtUB_Kzv_2b7NSod6LkEv-iVZ_KhBGsIw&callback=initMap&libraries=&v=weekly" async defer></script> -->
     <script src="libs/leaflet/leaflet.js"></script>
     <script src="libs/leaflet-realtime/leaflet-realtime.js"></script>
     <script src="libs/jquery-number/jquery.number.min.js"></script>
