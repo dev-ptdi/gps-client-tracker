@@ -46,8 +46,6 @@ $(function() {
     getLocations();
 });
 
-setInterval(updatePosition, _loadInverval);
-
 function getLocations() {
     const params = {
         token: getUrlVars()['token']
@@ -115,6 +113,8 @@ function getLocations() {
                     } else {
                         selectVin(_selectedIndex);
                     }
+
+                    setInterval(updatePosition, _loadInverval);
                 }
             } else alert('Token expired');
         } else alert(result.msg);
