@@ -46,7 +46,7 @@ $(function() {
     getLocations();
 });
 
-setInterval(updatePosition, 5000);
+setInterval(updatePosition, 10000);
 
 function getLocations() {
     const params = {
@@ -144,7 +144,7 @@ function updatePosition() {
     };
 
     ajaxCallPost('data.php', params, function(result) {
-        if(result.success == true) {
+        if(result.result) {
             const payload = result.payload;
             _latLngBounds = L.latLngBounds();
 
