@@ -77,6 +77,7 @@ function getLocations() {
                         html += '<div id="collapse-' + e.vin + '" class="collapse ' + (i == _selectedIndex ? 'show' : '') + '" aria-labelledby="heading-' + e.vin + '" data-parent="#device-list">';
                         html += '<div class="card-body">';
                         html += '<table class="table table-bordered table-hover table-sm mb-0 small">';
+                        html += '<tr><td>Server Time</td><td class="text-right">' + (coords == null ? 'NA' : coords.server_time) + '</td></tr>';
                         html += '<tr><td style="width: 25%;">Plate Number</td><td class="text-right font-weight-bold">' + e.name + '</td></tr>';
                         html += '<tr><td>VIN</td><td class="text-right">' + e.vin + '</td></tr>';
                         html += '<tr><td>Status</td><td class="text-right ' + (e.status === 'offline' ? 'text-danger' : (e.status === 'online' ? 'text-success' : 'text-warning')) + '">' + e.status + '</td></tr>';
@@ -85,7 +86,7 @@ function getLocations() {
                         html += '<tr><td>Battery Level</td><td class="text-right">' + e.battery + '%</td></tr>';
                         html += '<tr><td>Speed</td><td class="text-right">' + (coords == null ? 'NA' : $.number(coords.speed, 2)) + ' KM/H</td></tr>';
                         html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.odometer / 1000, 2)) + ' KM</td></tr>';
-                        html += '<tr><td>Total Distance</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.total_distance / 1000)) + ' KM/H</td></tr>';
+                        html += '<tr><td>Total Distance</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.total_distance / 1000)) + ' KM</td></tr>';
                         html += '<tr><td>Latitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lat) + '</td></tr>';
                         html += '<tr><td>Longitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lon) + '</td></tr>';
                         html += '<tr><td>Accuracy</td><td class="text-right">' + (coords == null ? 'NA' : coords.accuracy) + '</td></tr>';
