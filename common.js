@@ -85,8 +85,8 @@ function getLocations() {
                         html += '<tr><td>Signal Strength</td><td class="text-right">' + (e.rssi / 5) * 100 + '%</td></tr>';
                         html += '<tr><td>Battery Level</td><td class="text-right">' + e.battery + '%</td></tr>';
                         html += '<tr><td>Speed</td><td class="text-right">' + (coords == null ? 'NA' : $.number(coords.speed, 2)) + ' KM/H</td></tr>';
-                        html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.odometer / 1000, 2)) + ' KM</td></tr>';
-                        html += '<tr><td>Total Distance</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.total_distance / 1000)) + ' KM</td></tr>';
+                        // html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.odometer / 1000, 2)) + ' KM</td></tr>';
+                        html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.total_distance / 1000)) + ' KM</td></tr>';
                         html += '<tr><td>Latitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lat) + '</td></tr>';
                         html += '<tr><td>Longitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lon) + '</td></tr>';
                         html += '<tr><td>Accuracy</td><td class="text-right">' + (coords == null ? 'NA' : coords.accuracy) + '</td></tr>';
