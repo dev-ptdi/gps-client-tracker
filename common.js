@@ -136,7 +136,7 @@ function selectVin(index) {
     tooltip.options.offset = [0, -68];
     marker.unbindTooltip();
     marker.setIcon(_carIconSelected).bindTooltip(tooltip);
-    _map.setView(marker.getLatLng(), 20);
+    _map.setView(marker.getLatLng());
 }
 
 function updatePosition() {
@@ -147,11 +147,11 @@ function updatePosition() {
     ajaxCallPost('data.php', params, function(result) {
         if(result.result) {
             const payload = result.payload;
-            _latLngBounds = L.latLngBounds();
+            // _latLngBounds = L.latLngBounds();
 
             if(!payload.is_expired) {
                 const vins = payload.vins;
-                _latLngBounds = L.latLngBounds();
+                // _latLngBounds = L.latLngBounds();
 
                 if(vins.length > 0) {
                     $.each(vins, function(i, e) {
@@ -159,12 +159,12 @@ function updatePosition() {
                         if(coords != null) {
                             const index = _.findIndex(_vins, {vin: e.vin});
                             _markers[index].setLatLng([coords.lat, coords.lon]);
-                            _latLngBounds.extend([coords.lat, coords.lon]);
+                            // _latLngBounds.extend([coords.lat, coords.lon]);
                         }
                     });
 
                     if(_selectedIndex == -1) {
-                        _map.fitBounds(_latLngBounds);
+                        // _map.fitBounds(_latLngBounds);
                     } else {
                         selectVin(_selectedIndex);
                     }

@@ -8,8 +8,8 @@ if(defined('SHOW_ERR') && SHOW_ERR) {
 }
 
 $api_url = (ENV == 'production' ? 'http://localhost:5000/Traccar/Get_Token_InfoAsync' : 'https://gps.bataviarent.com/prime/iot/v1/api/Traccar/Get_Token_InfoAsync');
-$api_key = 'XRFhwNDIyQDMxMzcyZTMyMmUzMlTclR21RaFh';
-$api_secret = 'TclR2Y1dE4vdkNPT09GJwRzvKzhialRCTclRA';
+$api_key = 'fmUSLneh99jhTEd27ptO1Lx5nARtx4wIcvSdahSi';
+$api_secret = 'AMfSKPBosWYddEyWYtZiWirBeFTbggfL8xY05Rcm';
 
 
 if(isset($_POST['token'])) {
