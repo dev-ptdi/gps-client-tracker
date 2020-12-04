@@ -71,28 +71,28 @@ function getLocations() {
                         let html = '<div class="card mb-3">';
                         html += '<div class="card-header" id="heading-' + e.vin + '">';
                         html += '<h5 class="mb-0">';
-                        html += '<button class="btn btn-link btn-select-vin" data-toggle="collapse" data-name="' + e.name + '" data-vin="' + e.vin + '" data-index="' + i + '" data-target="#collapse-' + e.vin + '" aria-expanded="true" aria-controls="collapse-' + e.vin + '">' + e.name + '</button>'
+                        html += '<button class="btn btn-link btn-select-vin" data-toggle="collapse" data-name="' + e.name + '" data-device-id="' + e.DeviceId + '" data-index="' + i + '" data-target="#collapse-' + e.vin + '" aria-expanded="true" aria-controls="collapse-' + e.vin + '">' + e.name + '</button>'
                         html += '</h5>';
                         html += '</div>';
                         html += '<div id="collapse-' + e.vin + '" class="collapse ' + (i == _selectedIndex ? 'show' : '') + '" aria-labelledby="heading-' + e.vin + '" data-parent="#device-list">';
                         html += '<div class="card-body">';
                         html += '<table class="table table-bordered table-hover table-sm mb-0 small">';
-                        html += '<tr><td>Server Time</td><td class="text-right">' + (coords == null ? 'NA' : coords.server_time) + '</td></tr>';
-                        html += '<tr><td style="width: 25%;">Plate Number</td><td class="text-right font-weight-bold">' + e.name + '</td></tr>';
-                        html += '<tr><td>VIN</td><td class="text-right">' + e.vin + '</td></tr>';
-                        html += '<tr><td>Status</td><td class="text-right ' + (e.status === 'offline' ? 'text-danger' : (e.status === 'online' ? 'text-success' : 'text-warning')) + '">' + e.status + '</td></tr>';
-                        html += '<tr><td>Ignition</td><td class="text-right">' + (e.ignition ? 'On' : 'Off') + '</td></tr>';
-                        html += '<tr><td>Signal Strength</td><td class="text-right">' + (e.rssi / 5) * 100 + '%</td></tr>';
-                        html += '<tr><td>Battery Level</td><td class="text-right">' + e.battery + '%</td></tr>';
-                        html += '<tr><td>Speed</td><td class="text-right">' + (coords == null ? 'NA' : $.number(coords.speed, 2)) + ' KM/H</td></tr>';
+                        html += '<tr><td>Server Time</td><td class="text-right vin-server-time" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.server_time) + '</td></tr>';
+                        html += '<tr><td style="width: 25%;">Plate Number</td><td class="text-right font-weight-bold vin-name" data-device-id="' + e.DeviceId + '">' + e.name + '</td></tr>';
+                        html += '<tr><td>VIN</td><td class="text-right vin-vin" data-device-id="' + e.DeviceId + '">' + e.vin + '</td></tr>';
+                        html += '<tr><td>Status</td><td class="text-right vin-status ' + (e.status === 'offline' ? 'text-danger' : (e.status === 'online' ? 'text-success' : 'text-warning')) + '" data-device-id="' + e.DeviceId + '">' + e.status + '</td></tr>';
+                        html += '<tr><td>Ignition</td><td class="text-right vin-ignition" data-device-id="' + e.DeviceId + '">' + (e.ignition ? 'On' : 'Off') + '</td></tr>';
+                        html += '<tr><td>Signal Strength</td><td class="text-right vin-rssi" data-device-id="' + e.DeviceId + '">' + (e.rssi / 5) * 100 + '%</td></tr>';
+                        html += '<tr><td>Battery Level</td><td class="text-right vin-battery" data-device-id="' + e.DeviceId + '">' + e.battery + '%</td></tr>';
+                        html += '<tr><td>Speed</td><td class="text-right vin-speed" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : $.number(coords.speed, 2) + 'KM/H') + '</td></tr>';
                         // html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.odometer / 1000, 2)) + ' KM</td></tr>';
-                        html += '<tr><td>Odometer</td><td class="text-right">' + (coords == null ? 'NA' : $.number(e.total_distance / 1000)) + ' KM</td></tr>';
-                        html += '<tr><td>Latitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lat) + '</td></tr>';
-                        html += '<tr><td>Longitude</td><td class="text-right">' + (coords == null ? 'NA' : coords.lon) + '</td></tr>';
-                        html += '<tr><td>Accuracy</td><td class="text-right">' + (coords == null ? 'NA' : coords.accuracy) + '</td></tr>';
-                        html += '<tr><td>Address</td><td class="text-right">' + (coords == null ? 'NA' : coords.address) + '</td></tr>';
-                        html += '<tr><td>Alarm</td><td class="text-right text-danger font-weight-bold">' + e.alarm + '</td></tr>';
-                        html += '<tr><td>Geofence</td><td class="text-right">' + (coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')) + '</td></tr>';
+                        html += '<tr><td>Odometer</td><td class="text-right vin-odometer" data-device-id="' + e.DeviceId + '">' + $.number(e.total_distance / 1000) + 'KM' + '</td></tr>';
+                        html += '<tr><td>Latitude</td><td class="text-right vin-lat" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.lat) + '</td></tr>';
+                        html += '<tr><td>Longitude</td><td class="text-right vin-lon" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.lon) + '</td></tr>';
+                        html += '<tr><td>Accuracy</td><td class="text-right vin-accuracy" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.accuracy) + '</td></tr>';
+                        html += '<tr><td>Address</td><td class="text-right vin-address" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.address) + '</td></tr>';
+                        html += '<tr><td>Alarm</td><td class="text-right text-danger font-weight-bold vin-alarm" data-device-id="' + e.DeviceId + '">' + e.alarm + '</td></tr>';
+                        html += '<tr><td>Geofence</td><td class="text-right vin-geofence" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')) + '</td></tr>';
                         html += '</table>';
                         html += '</div>';
                         html += '</div>';
@@ -157,6 +157,25 @@ function updatePosition() {
                     $.each(vins, function(i, e) {
                         const coords = e.coords;
                         if(coords != null) {
+                            $('.vin-server-time[data-device-id="' + e.DeviceId + '"]').html(coords.server_time);
+                            $('.vin-name[data-device-id="' + e.DeviceId + '"]').html(e.name);
+                            let statusClass = 'text-success';
+                            if(e.status == 'offline') statusClass = 'text-danger';
+                            $('.vin-status[data-device-id="' + e.DeviceId + '"]').removeClass('text-danger').removeClass('text-success');
+                            $('.vin-status[data-device-id="' + e.DeviceId + '"]').html(e.status).addClass(statusClass);
+                            $('.vin-vin[data-device-id="' + e.DeviceId + '"]').html(e.vin);
+                            $('.vin-ignition[data-device-id="' + e.DeviceId + '"]').html((e.ignition ? 'On' : 'Off'));
+                            $('.vin-rssi[data-device-id="' + e.DeviceId + '"]').html(((e.rssi / 5) * 100));
+                            $('.vin-battery[data-device-id="' + e.DeviceId + '"]').html(e.battery + '%');
+                            $('.vin-speed[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : $.number(coords.speed, 2) + 'KM/H'));
+                            $('.vin-odometer[data-device-id="' + e.DeviceId + '"]').html($.number((e.total_distance / 1000)) + 'KM');
+                            $('.vin-lat[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.lat));
+                            $('.vin-lon[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.lon));
+                            $('.vin-accuracy[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.accuracy));
+                            $('.vin-address[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.address));
+                            $('.vin-alarm[data-device-id="' + e.DeviceId + '"]').html(e.alarm);
+                            $('.vin-address[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')));
+                            
                             const index = _.findIndex(_vins, {vin: e.vin});
                             _markers[index].setLatLng([coords.lat, coords.lon]);
                             // _latLngBounds.extend([coords.lat, coords.lon]);
