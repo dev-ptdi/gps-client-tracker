@@ -160,6 +160,7 @@ function updatePosition() {
                         if(coords != null) {
                             $('.vin-server-time[data-device-id="' + e.DeviceId + '"]').html(coords.server_time);
                             $('.vin-name[data-device-id="' + e.DeviceId + '"]').html(e.name);
+                            $('.vin-category[data-device-id="' + e.DeviceId + '"]').html(e.category);
                             let statusClass = 'text-success';
                             if(e.status == 'offline') statusClass = 'text-danger';
                             $('.vin-status[data-device-id="' + e.DeviceId + '"]').removeClass('text-danger').removeClass('text-success');
