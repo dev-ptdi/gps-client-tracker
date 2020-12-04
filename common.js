@@ -79,6 +79,7 @@ function getLocations() {
                         html += '<table class="table table-bordered table-hover table-sm mb-0 small">';
                         html += '<tr><td>Server Time</td><td class="text-right vin-server-time" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.server_time) + '</td></tr>';
                         html += '<tr><td style="width: 25%;">Plate Number</td><td class="text-right font-weight-bold vin-name" data-device-id="' + e.DeviceId + '">' + e.name + '</td></tr>';
+                        html += '<tr><td style="width: 25%;">Category</td><td class="text-right vin-category" data-device-id="' + e.DeviceId + '">' + e.category + '</td></tr>';
                         html += '<tr><td>VIN</td><td class="text-right vin-vin" data-device-id="' + e.DeviceId + '">' + e.vin + '</td></tr>';
                         html += '<tr><td>Status</td><td class="text-right vin-status ' + (e.status === 'offline' ? 'text-danger' : (e.status === 'online' ? 'text-success' : 'text-warning')) + '" data-device-id="' + e.DeviceId + '">' + e.status + '</td></tr>';
                         html += '<tr><td>Ignition</td><td class="text-right vin-ignition" data-device-id="' + e.DeviceId + '">' + (e.ignition ? 'On' : 'Off') + '</td></tr>';
