@@ -13,6 +13,7 @@ require_once 'config.php';
     <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="libs/@fortawesome/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="libs/animate.css/animate.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,6 +24,7 @@ require_once 'config.php';
             </div>
             <div id="sidebar" class="col-lg-3 col-12 p-3 border-right">
                 <h4 class="ml-3 mr-3 mb-4">Vehicle List</h4>
+                <button type="button" class="btn btn-primary mb-3" id="btn-recenter-map" onclick="refresh();" style="display: none;"><i class="fas fa-sync mr-2"></i>Re-Center Map</button>
                 <div id="device-list"></div>
             </div>
         </div>
@@ -38,6 +40,7 @@ require_once 'config.php';
     <script src="libs/leaflet/leaflet.js"></script>
     <script src="libs/leaflet-realtime/leaflet-realtime.js"></script>
     <script src="libs/jquery-number/jquery.number.min.js"></script>
+    <script src="libs/bootstrap-notify/bootstrap-notify.min.js"></script>
     <script src="common.min.js"></script>
 </body>
 </html>

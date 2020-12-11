@@ -10,7 +10,9 @@ var _mapBoxPublicToken = 'pk.eyJ1IjoiZGV2LXB0ZGkiLCJhIjoiY2tmZHBnZWM5MDlqejJ6bmV
     _selectedVin = null,
     _selectedIndex = -1,
     _carIcon = null,
-    _carIconSelected = null;
+    _carIconSelected = null,
+    _reloadInterval = null,
+    _btnRecenterMap = $('#btn-recenter-map');
 
 $(function() {
     _carIcon = L.icon({
@@ -46,6 +48,22 @@ $(function() {
     getLocations();
 });
 
+function refresh() {
+    for(let i = 0; i < _markers.length; i++) {
+        const prevTooltip = _markers[i].getTooltip();
+        prevTooltip.options.offset = [0, -50];
+        _markers[i].unbindTooltip();
+        _markers[i].setIcon(_carIcon).bindTooltip(prevTooltip);
+    }
+
+    $.each(_vins, function(i, e) {
+        $('#collapse-' + e.DeviceId).collapse('hide');
+    });
+
+    _selectedIndex = -1;
+    _map.fitBounds(_latLngBounds);
+}
+
 function getLocations() {
     const params = {
         token: getUrlVars()['token']
@@ -65,17 +83,33 @@ function getLocations() {
                 _vins = payload.vins;
 
                 if(_vins.length > 0) {
+                    _btnRecenterMap.show();
+
                     $.each(_vins, function(i, e) {
                         const coords = e.coords;
 
                         let html = '<div class="card mb-3">';
                         html += '<div class="card-header" id="heading-' + e.vin + '">';
                         html += '<h5 class="mb-0">';
-                        html += '<button class="btn btn-link btn-select-vin" data-toggle="collapse" data-name="' + e.name + '" data-device-id="' + e.DeviceId + '" data-index="' + i + '" data-target="#collapse-' + e.vin + '" aria-expanded="true" aria-controls="collapse-' + e.vin + '">' + e.name + '</button>'
+                        html += '<button class="btn btn-link btn-select-vin" data-toggle="collapse" data-name="' + e.name + '" data-device-id="' + e.DeviceId + '" data-index="' + i + '" data-target="#collapse-' + e.DeviceId + '" aria-expanded="true" aria-controls="collapse-' + e.DeviceId + '">' + e.name + '</button>'
                         html += '</h5>';
                         html += '</div>';
-                        html += '<div id="collapse-' + e.vin + '" class="collapse ' + (i == _selectedIndex ? 'show' : '') + '" aria-labelledby="heading-' + e.vin + '" data-parent="#device-list">';
+                        html += '<div id="collapse-' + e.DeviceId + '" class="collapse ' + (i == _selectedIndex ? 'show' : '') + '" aria-labelledby="heading-' + e.vin + '" data-parent="#device-list">';
                         html += '<div class="card-body">';
+                        // Added share location button
+                        // html += '<button type="button" class="btn btn-primary btn-sm mb-2" onclick="shareLocation(' + coords.lat + ', ' + coords.lon + ', ' + e.DeviceId + ');"><i class="fas fa-location-arrow mr-2"></i>Share Location URL</button>';
+                        html += '<div class="form-group">';
+                        html += '<label class="small mb-1">Share Location URL</label>';
+                        html += '<div class="mb-3">';
+                        html += '<div class="input-group">';
+                        html += '<input type="text" class="form-control form-control-sm" id="input-share-location-' + e.DeviceId + '" value="' + generateShareLocationUrl(coords.lat, coords.lon) + '" readonly />';
+                        html += '<div class="input-group-append">';
+                        html += '<button type="button" class="btn btn-outline-secondary btn-sm" onclick="copyLocation(' + e.DeviceId + ');">Copy</button>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        // End added share location button
                         html += '<table class="table table-bordered table-hover table-sm mb-0 small">';
                         html += '<tr><td>Server Time</td><td class="text-right vin-server-time" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.server_time) + '</td></tr>';
                         html += '<tr><td style="width: 25%;">Plate Number</td><td class="text-right font-weight-bold vin-name" data-device-id="' + e.DeviceId + '">' + e.name + '</td></tr>';
@@ -116,11 +150,28 @@ function getLocations() {
                         selectVin(_selectedIndex);
                     }
 
-                    setInterval(updatePosition, _loadInverval);
+                    _reloadInterval = setInterval(updatePosition, _loadInverval);
                 }
-            } else alert('Token expired');
-        } else alert(result.msg);
+            } else showError('Token expired');
+        } else showError(result.msg);
     });
+}
+
+function generateShareLocationUrl(lat, lon, deviceId) {
+    const url = 'https://maps.google.com/?q=' + lat + ',' + lon;
+
+    if(deviceId == undefined) return url;
+    else $('#input-share-location-' + deviceId).val(url);
+}
+
+function copyLocation(deviceId) {
+    const copyText = document.getElementById('input-share-location-' + deviceId);
+    if(copyText.value.trim() !== '') {
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        showSuccess('Location copied to clipboard');
+    }
 }
 
 function selectVin(index) {
@@ -140,6 +191,11 @@ function selectVin(index) {
     _map.setView(marker.getLatLng());
 }
 
+function recenterCar(index) {
+    const marker = _markers[index];
+    _map.setView(marker.getLatLng());
+}
+
 function updatePosition() {
     const params = {
         token: getUrlVars()['token']
@@ -148,7 +204,7 @@ function updatePosition() {
     ajaxCallPost('data.php', params, function(result) {
         if(result.result) {
             const payload = result.payload;
-            // _latLngBounds = L.latLngBounds();
+            _latLngBounds = L.latLngBounds();
 
             if(!payload.is_expired) {
                 const vins = payload.vins;
@@ -180,7 +236,8 @@ function updatePosition() {
                             
                             const index = _.findIndex(_vins, {vin: e.vin});
                             _markers[index].setLatLng([coords.lat, coords.lon]);
-                            // _latLngBounds.extend([coords.lat, coords.lon]);
+                            _latLngBounds.extend([coords.lat, coords.lon]);
+                            generateShareLocationUrl(coords.lat, coords.lon, e.DeviceId);
                         }
                     });
 
@@ -190,8 +247,8 @@ function updatePosition() {
                         selectVin(_selectedIndex);
                     }
                 }
-            } else alert('Token expired');
-        } else alert(result.message);
+            } else showError('Token expired');
+        } else showError(result.message);
     });
 }
 
@@ -215,5 +272,47 @@ function ajaxCallPost(url, data, callback) {
         success: function(result) {
             callback(result);
         }
+    });
+}
+
+function showError(message) {
+    $.notifyClose();
+    
+    $.notify({
+        message: message
+    }, {
+        type: 'danger',
+        delay: 0,
+        newest_on_top: false,
+        placement: {
+            from: 'top',
+            align: 'right'
+        },
+        animate: {
+            enter: 'animated fadeInDown',
+            exit: 'animated fadeOutUp'
+        },
+        z_index: 9999
+    });
+}
+
+function showSuccess(message) {
+    $.notifyClose();
+    
+    $.notify({
+        message: message
+    }, {
+        type: 'success',
+        delay: 3000,
+        newest_on_top: false,
+        placement: {
+            from: 'top',
+            align: 'right'
+        },
+        animate: {
+            enter: 'animated fadeInDown',
+            exit: 'animated fadeOutUp'
+        },
+        z_index: 9999
     });
 }
