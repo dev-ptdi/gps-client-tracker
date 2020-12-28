@@ -153,7 +153,7 @@ function getLocations() {
                         html += '<tr><td>Longitude</td><td class="text-right vin-lon" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.lon) + '</td></tr>';
                         html += '<tr><td>Accuracy</td><td class="text-right vin-accuracy" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.accuracy) + '</td></tr>';
                         html += '<tr><td>Address</td><td class="text-right vin-address" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : coords.address) + '</td></tr>';
-                        html += '<tr><td>Alarm</td><td class="text-right text-danger font-weight-bold vin-alarm" data-device-id="' + e.DeviceId + '">' + e.alarm + '</td></tr>';
+                        html += '<tr><td>Last Alarm</td><td class="text-right text-danger font-weight-bold vin-alarm" data-device-id="' + e.DeviceId + '">' + e.alarm + '</td></tr>';
                         html += '<tr><td>Geofence</td><td class="text-right vin-geofence" data-device-id="' + e.DeviceId + '">' + (coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')) + '</td></tr>';
                         html += '</table>';
                         html += '</div>';
