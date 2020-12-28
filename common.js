@@ -270,7 +270,7 @@ function updatePosition() {
                             $('.vin-accuracy[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.accuracy));
                             $('.vin-address[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : coords.address));
                             $('.vin-alarm[data-device-id="' + e.DeviceId + '"]').html(e.alarm);
-                            $('.vin-address[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')));
+                            $('.vin-geofence[data-device-id="' + e.DeviceId + '"]').html((coords == null ? 'NA' : (coords.geofence.length > 0 ? 'Yes' : 'No')));
                             
                             const index = _.findIndex(_vins, {vin: e.vin});
                             _markers[index].setLatLng([coords.lat, coords.lon]);
