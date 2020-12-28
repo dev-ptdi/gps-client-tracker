@@ -10,20 +10,47 @@ var _mapBoxPublicToken = 'pk.eyJ1IjoiZGV2LXB0ZGkiLCJhIjoiY2tmZHBnZWM5MDlqejJ6bmV
     _selectedVin = null,
     _selectedIndex = -1,
     _carIcon = null,
+    _truckIcon = null,
+    _vanIcon = null,
     _carIconSelected = null,
+    _truckIconSelected = null,
+    _vanIconSelected = null,
     _reloadInterval = null,
     _btnRecenterMap = $('#btn-recenter-map');
 
 $(function() {
     _carIcon = L.icon({
-        iconUrl: 'images/car-marker-32.png',
-        iconSize: [48, 48],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -50],
+        iconUrl: 'images/car_off.png',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
     });
 
     _carIconSelected = L.icon({
-        iconUrl: 'images/car-marker-64.png',
+        iconUrl: 'images/car_on.png',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
+    });
+
+    _truckIcon = L.icon({
+        iconUrl: 'images/truck_off.png',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
+    });
+
+    _truckIconSelected = L.icon({
+        iconUrl: 'images/truck_on.png',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
+    });
+
+    _vanIcon = L.icon({
+        iconUrl: 'images/van_off.png',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
+    });
+
+    _vanIconSelected = L.icon({
+        iconUrl: 'images/van_on.png',
         iconSize: [64, 64],
         iconAnchor: [32, 64]
     });
@@ -51,7 +78,7 @@ $(function() {
 function refresh() {
     for(let i = 0; i < _markers.length; i++) {
         const prevTooltip = _markers[i].getTooltip();
-        prevTooltip.options.offset = [0, -50];
+        prevTooltip.options.offset = [0, -64];
         _markers[i].unbindTooltip();
         _markers[i].setIcon(_carIcon).bindTooltip(prevTooltip);
     }
@@ -135,7 +162,12 @@ function getLocations() {
 
                         _deviceList.append(html);
 
-                        const marker = L.marker([coords.lat, coords.lon], {icon: _carIcon}).addTo(_markerGroup).bindTooltip('<strong>' + e.name + '</strong>', {offset: [0, -50], direction: 'top', permanent: true}).openTooltip();
+                        let activeIcon = _carIcon;
+
+                        if(e.category == 'truck') activeIcon = _truckIcon;
+                        else if(e.category == 'van') activeIcon = _vanIcon;
+
+                        const marker = L.marker([coords.lat, coords.lon], {icon: activeIcon}).addTo(_markerGroup).bindTooltip('<strong>' + e.name + '</strong>', {offset: [0, -64], direction: 'top', permanent: true}).openTooltip();
                         _markers.push(marker);
                         _latLngBounds.extend([coords.lat, coords.lon]);
                     });
@@ -177,17 +209,23 @@ function copyLocation(deviceId) {
 function selectVin(index) {
     for(let i = 0; i < _markers.length; i++) {
         const prevTooltip = _markers[i].getTooltip();
-        prevTooltip.options.offset = [0, -50];
+        prevTooltip.options.offset = [0, -64];
         _markers[i].unbindTooltip();
         _markers[i].setIcon(_carIcon).bindTooltip(prevTooltip);
     }
 
     _selectedIndex = index;
+    const category = _vins[_selectedIndex].category;
+    let selectedIcon = _carIconSelected;
+
+    if(category == 'truck') selectedIcon = _truckIconSelected;
+    else if(category == 'van') selectedIcon = _vanIconSelected;
+    
     const marker = _markers[index];
     const tooltip = marker.getTooltip();
-    tooltip.options.offset = [0, -68];
+    tooltip.options.offset = [0, -64];
     marker.unbindTooltip();
-    marker.setIcon(_carIconSelected).bindTooltip(tooltip);
+    marker.setIcon(selectedIcon).bindTooltip(tooltip);
     _map.setView(marker.getLatLng());
 }
 
