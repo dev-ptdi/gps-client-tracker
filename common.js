@@ -245,11 +245,12 @@ function updatePosition() {
             _latLngBounds = L.latLngBounds();
 
             if(!payload.is_expired) {
-                const vins = payload.vins;
+                // const vins = payload.vins;
+                _vins = payload.vins;
                 // _latLngBounds = L.latLngBounds();
 
-                if(vins.length > 0) {
-                    $.each(vins, function(i, e) {
+                if(_vins.length > 0) {
+                    $.each(_vins, function(i, e) {
                         const coords = e.coords;
                         if(coords != null) {
                             $('.vin-server-time[data-device-id="' + e.DeviceId + '"]').html(coords.server_time);
